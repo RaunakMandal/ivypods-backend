@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateContact = exports.getContactsByUser = exports.addContact = void 0;
+exports.deleteContact = exports.updateContact = exports.getContactsByUser = exports.addContact = void 0;
 const contacts_model_1 = __importDefault(require("../models/contacts.model"));
 const addContact = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { fullname, email, phone, message } = req.body;
@@ -73,6 +73,28 @@ const updateContact = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     });
 });
 exports.updateContact = updateContact;
+const deleteContact = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield contacts_model_1.default.findOneAndDelete({ _id: req.params.id, owner: req.auth._id })
+        .then((contact) => {
+        if (!contact) {
+            return res.status(404).json({
+                error: true,
+                message: "Contact not found or user not authorized",
+            });
+        }
+        return res.status(200).json({
+            error: false,
+            message: "Contact deleted successfully",
+        });
+    })
+        .catch((err) => {
+        return res.status(500).json({
+            error: true,
+            message: err.message,
+        });
+    });
+});
+exports.deleteContact = deleteContact;
 const getContactsByUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { _id } = req.auth;
     const { per_page, page } = req.query;

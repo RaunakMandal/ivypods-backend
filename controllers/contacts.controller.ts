@@ -63,6 +63,28 @@ const updateContact = async (req: Request, res: Response) => {
     });
 };
 
+const deleteContact = async (req: Request, res: Response) => {
+    await Contact.findOneAndDelete({ _id: req.params.id, owner: req.auth._id })
+    .then((contact) => {
+        if (!contact) {
+            return res.status(404).json({
+                error: true,
+                message: "Contact not found or user not authorized",
+            });
+        }
+        return res.status(200).json({
+            error: false,
+            message: "Contact deleted successfully",
+        });
+    })
+    .catch((err: Error) => {
+        return res.status(500).json({
+            error: true,
+            message: err.message,
+        });
+    });
+};
+
 const getContactsByUser = async (req: Request, res: Response) => {
     const { _id } = req.auth;
     const { per_page, page } = req.query;
@@ -81,4 +103,4 @@ const getContactsByUser = async (req: Request, res: Response) => {
         });
 }
 
-export { addContact, getContactsByUser, updateContact };
+export { addContact, getContactsByUser, updateContact, deleteContact };
