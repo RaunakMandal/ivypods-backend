@@ -8,7 +8,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const mongoose_1 = __importDefault(require("mongoose"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT;
 app.use(express_1.default.json());
 const userRoutes = require("./routes/user.routes");
 const contactRoutes = require("./routes/contacts.routes");

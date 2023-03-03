@@ -17,7 +17,6 @@ const contactSchema = new mongoose.Schema({
     },
     message: {
         type: String,
-        required: true,
         length: 500,
     },
     owner: {

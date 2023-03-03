@@ -1,10 +1,10 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT as string;
 
 app.use(express.json());
 
@@ -14,7 +14,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/contacts', contactRoutes);
 
 mongoose
-  .connect(process.env.MONGODB_URL, {
+  .connect(process.env.MONGODB_URL as string, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
