@@ -94,11 +94,14 @@ const signin = async (req: Request, res: Response) => {
         });
       }
 
-      const token = Jwt.sign({ _id: user._id, username: user.username }, process.env.JWT_SECRET);
+      const token = Jwt.sign({ _id: user._id, username: user.username }, process.env.JWT_SECRET as string, { expiresIn: "7d" });
       res.cookie("token", token, { expires: new Date() });
       return res.json({
         error: false,
         token,
+        user: {
+            username: user.username, fullname: user.fullname, email: user.email
+        }
       });
     })
     .catch((err: Error) => {

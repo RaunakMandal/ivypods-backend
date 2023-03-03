@@ -99,11 +99,14 @@ const signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 message: "Username and password do not match",
             });
         }
-        const token = jsonwebtoken_1.default.sign({ _id: user._id, username: user.username }, process.env.JWT_SECRET);
+        const token = jsonwebtoken_1.default.sign({ _id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: "7d" });
         res.cookie("token", token, { expires: new Date() });
         return res.json({
             error: false,
             token,
+            user: {
+                username: user.username, fullname: user.fullname, email: user.email
+            }
         });
     })
         .catch((err) => {
